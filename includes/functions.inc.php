@@ -151,3 +151,30 @@ function submit_task_to_db($conn,$task,$task_name)
 	header("location: profile.php?error=none");
 	exit();
 }
+
+function sellect_all_task_to_db($conn)
+{
+    session_start();
+    $sql = "SELECT task,task_name FROM favourites where user_id = ?;";
+
+	$stmt = mysqli_stmt_init($conn);
+	if (!mysqli_stmt_prepare($stmt, $sql))
+    {
+        return -1;
+    }
+
+	mysqli_stmt_bind_param($stmt, "i",$_SESSION["userid"]);
+	mysqli_stmt_execute($stmt);
+    $tasks = mysqli_stmt_get_result($stmt);
+    $result = array();
+    $i = 0;
+    while ($row = mysqli_fetch_array($tasks,MYSQLI_ASSOC))
+     {
+      $result["task_$i"] = $row["task"];
+      $result["task_name_$i"] = $row["task_name"];
+      $i += 1;
+     }
+	mysqli_stmt_close($stmt);
+	mysqli_close($conn);
+	return $result;
+}

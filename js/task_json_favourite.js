@@ -51,7 +51,6 @@ var json_schema = {
       return;
     }
     var task_name = values["label"];
-     console.log(task_name);
     var json_str = JSON.stringify(values);
     $.ajax({
     type: "POST",
