@@ -50,7 +50,6 @@ $.get(
             var i = 0;
             while(response.hasOwnProperty("task_" + i))
             {
-            console.log("Test");
             var task = response["task_" + i];
             var task_name = response["task_name_" + i];
             new_task_form(task);
