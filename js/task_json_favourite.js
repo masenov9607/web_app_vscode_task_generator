@@ -1,4 +1,6 @@
 function new_task_form(current_task){
+var task_name = JSON.parse(current_task)["label"];
+
 var json_schema = {
   "schema": {
           "label": {
@@ -25,8 +27,8 @@ var json_schema = {
   },
 "form": [
     {
-    "type": "advancedfieldset",
-    "title": JSON.parse(current_task)["label"],
+    "type": "fieldset",
+    "title": task_name,
     "items": [
        "label",
        "type",
@@ -38,7 +40,19 @@ var json_schema = {
     },
     {
         "type": "button",
-        "title": "Delete",       
+        "title": "Delete",
+        "data": task_name,
+        "onClick": function (evt){
+        var data = $(this).attr("data");
+        evt.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "delete_task.php",
+            data: {
+            task_name: data
+            }});
+
+      }
     }
     
      ],

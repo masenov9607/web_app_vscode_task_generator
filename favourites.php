@@ -4,7 +4,7 @@
 ?>
 
 <section class="index-intro">
-    <h1>Create tasks.json</h1>
+    <h1>My task list</h1>
 </section>
 
 <section class="index-categories">
