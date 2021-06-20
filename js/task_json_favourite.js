@@ -68,7 +68,7 @@ var json_schema = {
     var json_str = JSON.stringify(values);
     $.ajax({
     type: "POST",
-    url: "submission.php",
+    url: "update_task.php",
     data: {
     task: json_str,
     task_name: task_name

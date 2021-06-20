@@ -194,6 +194,29 @@ function delete_task($conn,$task_name)
 	mysqli_stmt_execute($stmt);
 	mysqli_stmt_close($stmt);
 	mysqli_close($conn);
-    exit(header("Location: favourites.php?error=none"));
+
+    header("Location: favourites.php?error=none");
+    exit();
 }
+
+function update_task($conn,$task,$task_name)
+{
+    session_start();
+    $sql = "UPDATE favourites SET task=? where task_name = ?;";
+	$stmt = mysqli_stmt_init($conn);
+	if (!mysqli_stmt_prepare($stmt, $sql))
+    {
+        header("location: ../favourites.php?error=stmtfailed");
+    }
+
+	mysqli_stmt_bind_param($stmt, "ss",$task,$task_name);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_close($stmt);
+	mysqli_close($conn);
+
+    header("Location: favourites.php?error=none");
+    exit();
+}
+
+
 
