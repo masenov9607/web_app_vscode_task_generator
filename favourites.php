@@ -52,6 +52,7 @@ $.get(
             {
             var task = response["task_" + i];
             var task_name = response["task_name_" + i];
+            console.log(task);
             new_task_form(task);
             i += 1;
             }

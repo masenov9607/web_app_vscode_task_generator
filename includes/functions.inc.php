@@ -181,7 +181,6 @@ function sellect_all_task_to_db($conn)
 
 function delete_task($conn,$task_name)
 {
-    session_start();
     $sql = "DELETE FROM favourites where task_name = ?;";
 
 	$stmt = mysqli_stmt_init($conn);
@@ -201,7 +200,6 @@ function delete_task($conn,$task_name)
 
 function update_task($conn,$task,$task_name)
 {
-    session_start();
     $sql = "UPDATE favourites SET task=? where task_name = ?;";
 	$stmt = mysqli_stmt_init($conn);
 	if (!mysqli_stmt_prepare($stmt, $sql))
@@ -214,9 +212,38 @@ function update_task($conn,$task,$task_name)
 	mysqli_stmt_close($stmt);
 	mysqli_close($conn);
 
-    header("Location: favourites.php?error=none");
+    header("location: favourites.php?error=none");
+    //die();
     exit();
 }
 
+function select_by_task_name($conn,$task_name)
+{
+    $sql = "SELECT task FROM favourites where task_name = ?;";
+	$stmt = mysqli_stmt_init($conn);
+	if (!mysqli_stmt_prepare($stmt, $sql))
+    {
+        return -1;
+    }
 
+	mysqli_stmt_bind_param($stmt, "s",$task_name);
+	mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    $row = mysqli_fetch_array($res,MYSQLI_ASSOC);
+    $task = $row["task"];
+    mysqli_stmt_close($stmt);
+
+    return $task;
+
+}
+
+function update_task_by_poping_last_param($conn,$task_name)
+{
+    $old_task = select_by_task_name($conn,$task_name);
+    $odl_task_json = json_decode($old_task);
+    array_pop($odl_task_json->args);
+    $new_task_json = json_encode($odl_task_json);
+    update_task($conn,$new_task_json,$task_name);
+
+}
 
