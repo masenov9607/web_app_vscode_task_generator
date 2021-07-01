@@ -43,7 +43,8 @@ $('form').jsonForm({
       return;
     }
     var task_name = values["label"];
-     console.log(task_name);
+    console.log(task_name);
+    values["flag"] = 0;
     var json_str = JSON.stringify(values);
     $.ajax({
     type: "POST",

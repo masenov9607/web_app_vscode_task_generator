@@ -24,7 +24,9 @@ function new_task_form(current_task) {
                     "title": "argument {{idx}}"
                 }
             },
-
+            "flag" :  {
+            "type": "boolean",
+            }
         },
         "form": [
             {
@@ -39,6 +41,7 @@ function new_task_form(current_task) {
                             if (value) {
                                 var new_jso_obj = JSON.parse(current_task);
                                 new_jso_obj["label"] = value;
+                                console.log("New click " + value);
                                 var jso_str = JSON.stringify(new_jso_obj);
                                 console.log(jso_str);
                                 $.ajax({
@@ -100,11 +103,14 @@ function new_task_form(current_task) {
          {
                         "key": "args",
                         "onChange": function (evt) {
-
                             var value = $(evt.target).val();
                             if (value) {
                                 var new_jso_obj = JSON.parse(current_task);
                                 console.log("New value" + value);
+                                if (!new_jso_obj.hasOwnProperty('args'))
+                                {
+                                    new_jso_obj["args"] = [];
+                                }
                                 new_jso_obj["args"].push(value);
                                 var jso_str = JSON.stringify(new_jso_obj);
                                 console.log(jso_str);
@@ -119,6 +125,30 @@ function new_task_form(current_task) {
 
                             }
                         }
+                    },
+                    {
+                     "key": "flag",
+                      "inlinetitle": "Add to json",
+                         "onChange": function (evt) {
+
+                            var value = $(evt.target).val();
+                            if (value) {
+                                var new_jso_obj = JSON.parse(current_task);
+                                new_jso_obj["flag"] = (new_jso_obj["flag"] + 1) % 2;
+                                console.log("New click "+ new_jso_obj["flag"]);
+                                var jso_str = JSON.stringify(new_jso_obj);
+                                console.log(jso_str);
+                                $.ajax({
+                                    type: "POST",
+                                    url: "update_task.php",
+                                    data: {
+                                        task: jso_str,
+                                        task_name: task_name
+                                    }
+                                });
+
+                            }
+                    }
                     },
                     {
                         "type": "button",
@@ -142,23 +172,6 @@ function new_task_form(current_task) {
 
     }
   ],
-        "onSubmit": function (errors, values) {
-            if (errors) {
-                alert('Check the form for invalid values!');
-                return;
-            }
-            console.log("Values " + JSON.stringify(values));
-            var task_name = values["label"];
-            var json_str = JSON.stringify(values);
-            $.ajax({
-                type: "POST",
-                url: "update_task.php",
-                data: {
-                    task: json_str,
-                    task_name: task_name
-                }
-            });
-        }
     };
 
     json_schema["value"] = JSON.parse(current_task);

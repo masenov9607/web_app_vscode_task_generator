@@ -15,31 +15,8 @@
     <script type="text/javascript" src="jsonform/deps/opt/jsv.js"></script>
     <script type="text/javascript" src="jsonform/lib/jsonform.js"></script>
     <script type="text/javascript" src="js/task_json_favourite.js"></script>
+    <script type="text/javascript" src="js/download_button.js"></script>
 
-
-    <?php
-   /*
-if (isset($_GET["tasks"])
-    {
-  while ($row = mysqli_fetch_array($_GET["tasks"],MYSQLI_ASSOC))
-     {
-      $task = $row["task"];
-      $task_name = $row["task_name"];
-      echo '<script>new_task_form("$task");</script>';
-      echo '<form action="#">';
-      echo '<div class="switch">';
-      echo '<input id="$task_name" type="checkbox" class="switch-input" />';
-      echo '<label for="switch-1" class="switch-label">Switch</label>';
-      echo '</div>';
-      echo '</form>';
-     }
-}
-
-else {
-        echo "<p>Something went wrong</p>";
-}
-*/
- ?>
 </section>
 
 
@@ -52,7 +29,6 @@ $.get(
             {
             var task = response["task_" + i];
             var task_name = response["task_name_" + i];
-            console.log(task);
             new_task_form(task);
             i += 1;
             }
@@ -60,6 +36,8 @@ $.get(
     );
 </script>
 
+
+<button class="btn_download" onclick="on_button_click()" ><i class="fa fa-download"></i>Download tasks.json</button>
 
 <script type="text/javascript">
     function loadCSS(filename) {
